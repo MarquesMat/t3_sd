@@ -1,0 +1,12 @@
+{
+    "title": "Meu Novo Filme",
+    "description": "Uma descrição interessante.",
+    "release_year": 2023,
+    "language_id": 1,
+    "rental_duration": 5,
+    "rental_rate": 2.99,
+    "length": 120,
+    "replacement_cost": 19.99,
+    "rating": "PG-13",
+    "special_features": "Trailers"
+}
