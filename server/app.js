@@ -10,15 +10,19 @@
 
 const express = require('express');
 const mysql = require('mysql');
+const fs = require('fs'); // Ler o arquivo json com as credenciais
 
 const app = express();
 const port = 3000;
 
 // Configurar a conexão com o banco de dados
+const filename = 'credential.json';
+const credenciais = JSON.parse(fs.readFileSync(filename, 'utf8'));
+
 const db = mysql.createConnection({
   host: 'localhost',
-  user: 'usuario', // Usuário do MySql
-  password: 'senha', // Senha do MySql
+  user:  credenciais.user, // Usuário do MySql
+  password: credenciais.password, // Senha do MySql
   database: 'sakila',
 });
 
