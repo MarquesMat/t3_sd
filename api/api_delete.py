@@ -1,5 +1,4 @@
 import requests
-import json
 import sys
 
 IP = "localhost" # Substitua pelo IP do servidor
@@ -8,7 +7,7 @@ TABLE = sys.argv[1] # Qual tabela será modificada
 ID = sys.argv[2] # Qual instância será deletada
 # atores, filmes, categorias
 
-# Fazer uma solicitação GET para obter dados da tabela atores
+# Fazer uma solicitação DELETE para retirar uma instância
 url_table_id = f"http://{IP}:{PORT}/{TABLE}/{ID}"
 response_table = requests.delete(url_table_id)
 
