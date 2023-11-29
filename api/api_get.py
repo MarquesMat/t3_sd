@@ -19,7 +19,7 @@ if response_table.status_code == 200:
     #print(data_atores)
 
     # Salvar os dados em um arquivo JSON
-    with open(f"/Matheus/Documents/UFF/UFF - 7 período/sistemas_distribuidos/t3_2/files/{TABLE}.json", "w") as json_file:
+    with open(f"C:/Users/davi2/OneDrive/Documentos/sd3/t3_sd/files/{TABLE}.json", "w") as json_file:
         json.dump(data_atores, json_file, indent=2)
         print(f"Dados de {TABLE} salvos em {TABLE}.json")
 

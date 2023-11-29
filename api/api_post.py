@@ -4,10 +4,11 @@ import sys
 
 IP = "localhost" # Substitua pelo IP do servidor
 PORT = "3000" # Porta utilizada
+FILES_PATH = "C:/Users/davi2/OneDrive/Documentos/sd3/t3_sd/files"
 
 if sys.argv[1] == "filme":
     # Dados do novo filme a ser adicionado
-    f = open("/Matheus/Documents/UFF/UFF - 7 período/sistemas_distribuidos/t3_2/files/novo_filme.json", 'r')
+    f = open(FILES_PATH + "/novo_filme.json", 'r')
     dados = json.load(f)
     f.close()
 
@@ -36,7 +37,7 @@ if sys.argv[1] == "filme":
         print(f"Erro ao adicionar Filme: {response_adicionar.status_code}")
 elif sys.argv[1] == "ator":
     # Dados do novo filme a ser adicionado
-    f = open("/Matheus/Documents/UFF/UFF - 7 período/sistemas_distribuidos/t3_2/files/novo_ator.json", 'r')
+    f = open(FILES_PATH +"/novo_ator.json", 'r')
     dados = json.load(f)
     f.close()
 
@@ -57,7 +58,7 @@ elif sys.argv[1] == "ator":
         print(f"Erro ao adicionar Ator: {response_adicionar.status_code}")
 elif sys.argv[1] == "categoria":
     # Dados do novo filme a ser adicionado
-    f = open("/Matheus/Documents/UFF/UFF - 7 período/sistemas_distribuidos/t3_2/files/nova_categoria.json", 'r')
+    f = open(FILES_PATH + "/nova_categoria.json", 'r')
     dados = json.load(f)
     f.close()
 

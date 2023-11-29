@@ -12,9 +12,12 @@ const express = require('express');
 const mysql = require('mysql');
 const fs = require('fs'); // Ler o arquivo json com as credenciais
 
+
+
 const apiGet = require('./get.js');
 const apiDelete = require('./delete.js');
 const apiPost = require('./post.js');
+const apiUpdate = require('./update.js');
 
 const app = express();
 const port = 3000;
@@ -61,6 +64,9 @@ app.use('/', apiPost);
 
 // Rotas para deletar instâncias das tabelas pelo ID (DELETE)
 app.use('/', apiDelete);
+
+// Rotas de atualização
+app.use('/', apiUpdate);
 
 // Iniciar o servidor
 app.listen(port, () => {

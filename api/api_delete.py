@@ -10,6 +10,7 @@ ID = sys.argv[2] # Qual instância será deletada
 # Fazer uma solicitação DELETE para retirar uma instância
 url_table_id = f"http://{IP}:{PORT}/{TABLE}/{ID}"
 response_table = requests.delete(url_table_id)
+print(url_table_id)
 
 if response_table.status_code == 200:
     resultado_excluir_filme = response_table.json()
