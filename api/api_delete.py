@@ -1,3 +1,4 @@
+import json
 import requests
 import sys
 import base64
@@ -8,20 +9,23 @@ def make_delete_request(url, auth):
     return response
 
 def get_credentials():
-
-    username = sys.argv[1]
-    password = sys.argv[2]
+    f = open("credentials.json", 'r')
+    dados = json.load(f)
+    f.close()
+    username = dados["user"]
+    password = dados["password"]
     credentials = base64.b64encode(f"{username}:{password}".encode()).decode("utf-8")
     return credentials
 
 def main():
-    ip = "localhost"
-    port = "3000"
-    table = sys.argv[3]
-    item_id = sys.argv[4]
+    ip = "localhost" # Substitua pelo IP do servidor
+    port = "3000" # Porta utilizada
+    table = sys.argv[1] # Qual tabela será modificada
+    id = sys.argv[2] # Qual instância será deletada
+    # atores, filmes, categorias
 
     # Fazer uma solicitação DELETE para retirar uma instância
-    url_table_id = f"http://{ip}:{port}/{table}/{item_id}"
+    url_table_id = f"http://{ip}:{port}/{table}/{id}"
 
     auth_credentials = get_credentials()
     response_table = make_delete_request(url_table_id, auth_credentials)
