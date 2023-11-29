@@ -48,56 +48,49 @@ router.get('/categorias', (req, res) => {
   });
 });
 
-// Rota para obter dados de uma categoria específica pelo category_id
-router.get('/categorias/:category_id', (req, res) => {
-  const categoryId = req.params.category_id;
+// Rota para obter dados da tabela film
+router.get('/filmes/:id', (req, res) => {
+  const filmeId = req.params.id;
 
-  db.query('SELECT * FROM category WHERE category_id = ?', [categoryId], (err, results) => {
+  const query = 'SELECT * FROM film WHERE film_id = ?';
+
+  db.query(query, [filmeId], (err, results) => {
     if (err) {
       res.status(500).send('Erro ao consultar o banco de dados');
     } else {
-      if (results.length > 0) {
-        res.json(results[0]);
-      } else {
-        res.status(404).json({ error: 'Categoria não encontrada' });
-      }
+      res.json(results);
     }
   });
 });
 
-// Rota para obter dados de um ator específico pelo actor_id
-router.get('/atores/:actor_id', (req, res) => {
-  const actorId = req.params.actor_id;
+// Rota para obter dados da tabela actor
+router.get('/atores/:id', (req, res) => {
+  const actorId = req.params.id;
 
-  db.query('SELECT * FROM actor WHERE actor_id = ?', [actorId], (err, results) => {
+  const query = 'SELECT * FROM actor WHERE actor_id = ?';
+
+  db.query(query, [actorId], (err, results) => {
     if (err) {
       res.status(500).send('Erro ao consultar o banco de dados');
     } else {
-      if (results.length > 0) {
-        res.json(results[0]);
-      } else {
-        res.status(404).json({ error: 'Ator não encontrado' });
-      }
+      res.json(results);
     }
   });
 });
 
-// Rota para obter dados de um filme específico pelo film_id
-router.get('/filmes/:film_id', (req, res) => {
-  const filmId = req.params.film_id;
+// Rota para obter dados da tabela category
+router.get('/categorias/:id', (req, res) => {
+  const categoryID = req.params.id;
 
-  db.query('SELECT * FROM film WHERE film_id = ?', [filmId], (err, results) => {
+  const query = 'SELECT * FROM category WHERE category_id = ?';
+
+  db.query(query, [categoryID], (err, results) => {
     if (err) {
       res.status(500).send('Erro ao consultar o banco de dados');
     } else {
-      if (results.length > 0) {
-        res.json(results[0]);
-      } else {
-        res.status(404).json({ error: 'Filme não encontrado' });
-      }
+      res.json(results);
     }
   });
 });
-
 
 module.exports = router;
