@@ -25,8 +25,11 @@ def make_put_request(url, data, auth):
     return requests.put(url, json=data, headers=headers)
 
 def get_credentials():
-    username = sys.argv[1]
-    password = sys.argv[2]
+    f = open("credentials.json", 'r')
+    dados = json.load(f)
+    f.close()
+    username = dados["user"]
+    password = dados["password"]
     credentials = base64.b64encode(f"{username}:{password}".encode()).decode("utf-8")
     return credentials
 
@@ -34,10 +37,10 @@ def main():
     ip = "localhost"
     port = "3000"
     table = "filmes"
-    files_path = "C:/Users/davi2/OneDrive/Documentos/sd3/t3_sd/files"
-    item_id = sys.argv[3]
-    update_field = sys.argv[4]
-    update_value = sys.argv[5]
+    files_path = "/Matheus/Documents/UFF/UFF - 7 período/sistemas_distribuidos/t3_2/files"
+    item_id = sys.argv[1]
+    update_field = sys.argv[2]
+    update_value = sys.argv[3]
 
     filmes = load_data(files_path + "/filmes.json")
     filme_atualizar = find_item_by_id(filmes, item_id)
