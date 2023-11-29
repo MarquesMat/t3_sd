@@ -5,17 +5,20 @@ import sys
 
 IP = "localhost"  
 PORT = "3000"  
-FILES_PATH = "C:/Users/davi2/OneDrive/Documentos/sd3/t3_sd/files"
+FILES_PATH = "/Matheus/Documents/UFF/UFF - 7 período/sistemas_distribuidos/t3_2/files"
 
-usuario = sys.argv[1]
-senha = sys.argv[2]
+f = open("credentials.json", 'r')
+dados = json.load(f)
+f.close()
+usuario = dados["user"]
+senha = dados["password"]
 
 # Criar a string de autenticação para o Basic Auth
 credenciais = f'{usuario}:{senha}'
 autenticacao = base64.b64encode(credenciais.encode('utf-8')).decode('utf-8')
 headers = {'Authorization': f'Basic {autenticacao}'}
 
-if sys.argv[3] == "filme":
+if sys.argv[1] == "filme":
     # Dados do novo filme a ser adicionado
     with open(FILES_PATH + "/novo_filme.json", 'r') as f:
         dados = json.load(f)
@@ -43,8 +46,9 @@ if sys.argv[3] == "filme":
         print(resultado_adicionar)
     else:
         print(f"Erro ao adicionar Filme: {response_adicionar.status_code}")
-elif sys.argv[3] == "ator":
-    # Dados do novo filme a ser adicionado
+
+elif sys.argv[1] == "ator": 
+    # Dados do novo ator a ser adicionado
     with open(FILES_PATH + "/novo_ator.json", 'r') as f:
         dados = json.load(f)
 
@@ -63,8 +67,8 @@ elif sys.argv[3] == "ator":
         print(resultado_adicionar)
     else:
         print(f"Erro ao adicionar Ator: {response_adicionar.status_code}")
-elif sys.argv[3] == "categoria":
-    # Dados do novo filme a ser adicionado
+elif sys.argv[1] == "categoria":
+    # Dados da nova categoria a ser adicionada
     with open(FILES_PATH + "/nova_categoria.json", 'r') as f:
         dados = json.load(f)
 
