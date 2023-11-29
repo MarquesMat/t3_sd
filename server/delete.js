@@ -3,7 +3,7 @@ const mysql = require('mysql');
 const fs = require('fs'); // Ler o arquivo json com as credenciais
 
 // Configurar a conexão com o banco de dados
-const filename = 'credential.json';
+const filename = 'credentials.json';
 const credenciais = JSON.parse(fs.readFileSync(filename, 'utf8'));
 
 const db = mysql.createConnection({
