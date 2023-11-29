@@ -9,23 +9,26 @@ def make_get_request(url, auth):
     return response
 
 def get_credentials():
-    username = sys.argv[1]
-    password = sys.argv[2]
+    f = open("credentials.json", 'r')
+    dados = json.load(f)
+    f.close()
+    username = dados["user"]
+    password = dados["password"]
     credentials = base64.b64encode(f"{username}:{password}".encode()).decode("utf-8")
     return credentials
 
 def main():
     ip = "localhost"
     port = "3000"
-    table = sys.argv[3]
+    table = sys.argv[1]
 
-    if len(sys.argv) > 3:
-        item_id = sys.argv[4]
-        url_table = f"http://{ip}:{port}/{table}/{item_id}"
-        file_path = f"C:/Users/davi2/OneDrive/Documentos/sd3/t3_sd/files/{table}_{item_id}.json"
-    else:
+    if len(sys.argv) > 2: # Buscar uma instância epecífica na tabela
+        id = sys.argv[2] # Qual ID buscar
+        url_table = f"http://{ip}:{port}/{table}/{id}"
+        file_path = f"/Matheus/Documents/UFF/UFF - 7 período/sistemas_distribuidos/t3_2/files/{table}_{id}.json"
+    else: # Buscar todas as informações da tabela
         url_table = f"http://{ip}:{port}/{table}"
-        file_path = f"C:/Users/davi2/OneDrive/Documentos/sd3/t3_sd/files/{table}.json"
+        file_path = f"/Matheus/Documents/UFF/UFF - 7 período/sistemas_distribuidos/t3_2/files/{table}.json"
 
     auth_credentials = get_credentials()
     response_table = make_get_request(url_table, auth_credentials)
