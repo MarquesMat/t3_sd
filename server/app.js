@@ -11,7 +11,8 @@
 const express = require('express');
 const mysql = require('mysql');
 const fs = require('fs'); // Ler o arquivo json com as credenciais
-
+const basicAuth = require('basic-auth');
+// const authenticate = require('./authenticate'); //Importando o middleware de autenticação
 
 
 const apiGet = require('./get.js');
@@ -19,8 +20,21 @@ const apiDelete = require('./delete.js');
 const apiPost = require('./post.js');
 const apiUpdate = require('./update.js');
 
+
 const app = express();
 const port = 3000;
+
+const authenticate = (req, res, next) => {
+  const user = basicAuth(req);
+// Verifica as credenciais
+  if (!user || user.name !== 'user' || user.pass !== 'pwd') {
+    res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
+    return res.status(401).send('Unauthorized');
+  }
+
+  // Se as credenciais estiverem corretas, prossiga para a próxima rota
+  next();
+};
 
 // Configurar a conexão com o banco de dados
 const filename = 'credential.json';
@@ -42,6 +56,7 @@ db.connect((err) => {
   }
 });
 
+app.use(authenticate);
 
 // Habilita solicitações de qualquer origem --> permite API em geral
 // Middleware para habilitar o CORS
