@@ -8,25 +8,25 @@
 
 // Se aparecer o erro "ER_NOT_SUPPORTED_AUTH_MODE", tente: ALTER USER 'seu_usuario'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY 'sua_senha'; 
 
+// Para a autenticação, é necessário instalar o basic-auth e o express: npm install basic-auth && npm install express
+
 const express = require('express');
 const mysql = require('mysql');
 const fs = require('fs'); // Ler o arquivo json com as credenciais
 const basicAuth = require('basic-auth');
-
 
 const apiGet = require('./get.js');
 const apiDelete = require('./delete.js');
 const apiPost = require('./post.js');
 const apiUpdate = require('./update.js');
 
-
 const app = express();
 const port = 3000;
 
 const authenticate = (req, res, next) => {
   const user = basicAuth(req);
-// Verifica as credenciais
-  if (!user || user.name !== 'user' || user.pass !== 'pwd') {
+  // Verifica as credenciais
+  if (!user || user.name !== 'usr' || user.pass !== 'pwd') {
     res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
     return res.status(401).send('Unauthorized');
   }
@@ -36,7 +36,7 @@ const authenticate = (req, res, next) => {
 };
 
 // Configurar a conexão com o banco de dados
-const filename = 'credential.json';
+const filename = 'credentials.json';
 const credenciais = JSON.parse(fs.readFileSync(filename, 'utf8'));
 
 const db = mysql.createConnection({
@@ -55,7 +55,7 @@ db.connect((err) => {
   }
 });
 
-app.use(authenticate);
+//app.use(authenticate);
 
 // Habilita solicitações de qualquer origem --> permite API em geral
 // Middleware para habilitar o CORS
@@ -70,17 +70,11 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Rotas para obter dados das tabelas (GET)
-app.use('/', apiGet);
 
-// Rotas para adicionar novas instâncias nas tabelas (POST)
-app.use('/', apiPost);
-
-// Rotas para deletar instâncias das tabelas pelo ID (DELETE)
-app.use('/', apiDelete);
-
-// Rotas de atualização
-app.use('/', apiUpdate);
+app.use('/', apiGet); // Rotas para obter dados das tabelas (GET)
+app.use('/', apiPost); // Rotas para adicionar novas instâncias nas tabelas (POST)
+app.use('/', apiDelete); // Rota para excluir um filme pelo ID (DELETE)
+app.use('/', apiUpdate); // Rotas de atualização
 
 // Iniciar o servidor
 app.listen(port, () => {
