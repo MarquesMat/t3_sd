@@ -1,12 +1,10 @@
-// update.js
-
 const express = require('express');
 const mysql = require('mysql');
 const fs = require('fs');
 
 const router = express.Router();
 
-const filename = 'credential.json';
+const filename = 'credentials.json';
 const credenciais = JSON.parse(fs.readFileSync(filename, 'utf8'));
 
 const db = mysql.createConnection({
