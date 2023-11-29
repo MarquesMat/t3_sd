@@ -1,19 +1,38 @@
 import requests
 import sys
+import base64
 
-IP = "localhost" # Substitua pelo IP do servidor
-PORT = "3000" # Porta utilizada
-TABLE = sys.argv[1] # Qual tabela será modificada
-ID = sys.argv[2] # Qual instância será deletada
-# atores, filmes, categorias
+def make_delete_request(url, auth):
+    headers = {"Authorization": "Basic " + auth}
+    response = requests.delete(url, headers=headers)
+    return response
 
-# Fazer uma solicitação DELETE para retirar uma instância
-url_table_id = f"http://{IP}:{PORT}/{TABLE}/{ID}"
-response_table = requests.delete(url_table_id)
-print(url_table_id)
+def get_credentials():
 
-if response_table.status_code == 200:
-    resultado_excluir_filme = response_table.json()
-    print(resultado_excluir_filme)
-else:
-    print(f"Erro ao excluir Filme: {response_table.status_code}")
+    username = sys.argv[1]
+    password = sys.argv[2]
+    credentials = base64.b64encode(f"{username}:{password}".encode()).decode("utf-8")
+    return credentials
+
+def main():
+    ip = "localhost"
+    port = "3000"
+    table = sys.argv[3]
+    item_id = sys.argv[4]
+
+    # Fazer uma solicitação DELETE para retirar uma instância
+    url_table_id = f"http://{ip}:{port}/{table}/{item_id}"
+
+    auth_credentials = get_credentials()
+    response_table = make_delete_request(url_table_id, auth_credentials)
+
+    print(url_table_id)
+
+    if response_table.status_code == 200:
+        resultado_excluir_filme = response_table.json()
+        print(resultado_excluir_filme)
+    else:
+        print(f"Erro ao excluir {table}: {response_table.status_code}")
+
+if __name__ == "__main__":
+    main()

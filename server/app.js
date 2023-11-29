@@ -12,7 +12,6 @@ const express = require('express');
 const mysql = require('mysql');
 const fs = require('fs'); // Ler o arquivo json com as credenciais
 const basicAuth = require('basic-auth');
-// const authenticate = require('./authenticate'); //Importando o middleware de autenticação
 
 
 const apiGet = require('./get.js');

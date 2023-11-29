@@ -1,29 +1,44 @@
 import requests
 import json
 import sys
+import base64
 
-IP = "localhost" # Substitua pelo IP do servidor
-PORT = "3000" # Porta utilizada
-TABLE = sys.argv[1] # Qual tabela será consultada
-# atores, filmes, categorias
+def make_get_request(url, auth):
+    headers = {"Authorization": "Basic " + auth}
+    response = requests.get(url, headers=headers)
+    return response
 
-if len(sys.argv) > 2: # Buscar uma instância epecífica na tabela
-    ID = sys.argv[2] # Qual ID buscar
-    url_table = f"http://{IP}:{PORT}/{TABLE}/{ID}"
-    path_file = f"/Matheus/Documents/UFF/UFF - 7 período/sistemas_distribuidos/t3_2/files/{TABLE}_{ID}.json"
-else: # Buscar todas as informações da tabela
-    url_table = f"http://{IP}:{PORT}/{TABLE}"
-    path_file = f"/Matheus/Documents/UFF/UFF - 7 período/sistemas_distribuidos/t3_2/files/{TABLE}.json"
+def get_credentials():
+    username = sys.argv[1]
+    password = sys.argv[2]
+    credentials = base64.b64encode(f"{username}:{password}".encode()).decode("utf-8")
+    return credentials
 
-response_table = requests.get(url_table)
+def main():
+    ip = "localhost"
+    port = "3000"
+    table = sys.argv[3]
 
-if response_table.status_code == 200:
-        dados = response_table.json()
+    if len(sys.argv) > 3:
+        item_id = sys.argv[4]
+        url_table = f"http://{ip}:{port}/{table}/{item_id}"
+        file_path = f"C:/Users/davi2/OneDrive/Documentos/sd3/t3_sd/files/{table}_{item_id}.json"
+    else:
+        url_table = f"http://{ip}:{port}/{table}"
+        file_path = f"C:/Users/davi2/OneDrive/Documentos/sd3/t3_sd/files/{table}.json"
+
+    auth_credentials = get_credentials()
+    response_table = make_get_request(url_table, auth_credentials)
+
+    if response_table.status_code == 200:
+        data = response_table.json()
 
         # Salvar os dados em um arquivo JSON
-        with open(path_file, "w") as json_file:
-            json.dump(dados, json_file, indent=2)
-            print(f"Dados de {TABLE} salvos em novo arquivo!")
+        with open(file_path, "w") as json_file:
+            json.dump(data, json_file, indent=2)
+            print(f"Dados de {table} salvos em novo arquivo!")
+    else:
+        print(f"Erro na solicitação de {table}: {response_table.status_code}")
 
-else:
-    print(f"Erro na solicitação de {TABLE}: {response_table.status_code}")
+if __name__ == "__main__":
+    main()
